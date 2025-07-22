@@ -7,17 +7,13 @@ import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-
-// These would typically be separate files in a real application
-const ProductsPage = () => <div className="container mx-auto px-4 py-12"><h1 className="text-3xl font-bold">All Products</h1></div>;
-const NewArrivalsPage = () => <div className="container mx-auto px-4 py-12"><h1 className="text-3xl font-bold">New Arrivals</h1></div>;
-const WomenPage = () => <div className="container mx-auto px-4 py-12"><h1 className="text-3xl font-bold">Women's Collection</h1></div>;
-const MenPage = () => <div className="container mx-auto px-4 py-12"><h1 className="text-3xl font-bold">Men's Collection</h1></div>;
-const CollectionsPage = () => <div className="container mx-auto px-4 py-12"><h1 className="text-3xl font-bold">Collections</h1></div>;
-const AboutPage = () => <div className="container mx-auto px-4 py-12"><h1 className="text-3xl font-bold">About Us</h1></div>;
-const CartPage = () => <div className="container mx-auto px-4 py-12"><h1 className="text-3xl font-bold">Shopping Cart</h1></div>;
-const AccountPage = () => <div className="container mx-auto px-4 py-12"><h1 className="text-3xl font-bold">My Account</h1></div>;
-const WishlistPage = () => <div className="container mx-auto px-4 py-12"><h1 className="text-3xl font-bold">My Wishlist</h1></div>;
+import { Shop } from "./pages/Shop";
+import { NewArrivals } from "./pages/NewArrivals";
+import { Recommendations } from "./pages/Recommendations";
+import { About } from "./pages/About";
+import { Profile } from "./pages/Profile";
+import { Cart } from "./pages/Cart";
+import { Wishlist } from "./pages/Wishlist";
 
 const queryClient = new QueryClient();
 
@@ -31,15 +27,13 @@ const App = () => (
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<Index />} />
-                <Route path="/products" element={<ProductsPage />} />
-                <Route path="/new" element={<NewArrivalsPage />} />
-                <Route path="/women" element={<WomenPage />} />
-                <Route path="/men" element={<MenPage />} />
-                <Route path="/collections" element={<CollectionsPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/account" element={<AccountPage />} />
-                <Route path="/wishlist" element={<WishlistPage />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/new-arrivals" element={<NewArrivals />} />
+                <Route path="/recommendations" element={<Recommendations />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/wishlist" element={<Wishlist />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

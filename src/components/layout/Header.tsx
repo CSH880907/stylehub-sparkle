@@ -1,19 +1,23 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, Heart, User, Menu, X } from "lucide-react";
+import { ShoppingCart, Heart, User, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { SearchBar } from "@/components/shop/SearchBar";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 
 export function Header() {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { itemCount } = useCart();
+  const { user, isAuthenticated } = useAuth();
 
   const menuItems = [
-    { label: "New Arrivals", href: "/new" },
-    { label: "Women", href: "/women" },
-    { label: "Men", href: "/men" },
-    { label: "Collections", href: "/collections" },
-    { label: "About", href: "/about" },
+    { label: "商品目錄", href: "/shop" },
+    { label: "新品上市", href: "/new-arrivals" },
+    { label: "精選推薦", href: "/recommendations" },
+    { label: "關於我們", href: "/about" },
   ];
 
   return (
@@ -39,24 +43,34 @@ export function Header() {
           )}
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="hidden md:inline-flex">
-            <Search className="size-5" />
-          </Button>
+        <div className="hidden md:block mx-4 flex-1 max-w-md">
+          <SearchBar />
+        </div>
           
+        <div className="flex items-center gap-2">
           <Link to="/wishlist">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="relative">
               <Heart className="size-5" />
+              {isAuthenticated && user?.wishlist.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
+                  {user.wishlist.length}
+                </span>
+              )}
             </Button>
           </Link>
           
           <Link to="/cart">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="size-5" />
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
             </Button>
           </Link>
           
-          <Link to="/account">
+          <Link to="/profile">
             <Button variant="ghost" size="icon" className="hidden md:inline-flex">
               <User className="size-5" />
             </Button>
@@ -74,6 +88,9 @@ export function Header() {
       {isMobile && isMenuOpen && (
         <div className="fixed inset-0 top-header bg-background z-40 animate-fade-in">
           <nav className="container mx-auto px-4 py-6 flex flex-col gap-4">
+            <div className="py-2">
+              <SearchBar />
+            </div>
             {menuItems.map((item) => (
               <Link
                 key={item.href}
@@ -86,18 +103,12 @@ export function Header() {
             ))}
             <hr className="my-4 border-border" />
             <Link
-              to="/account"
-              className="text-lg py-2 text-foreground hover:text-primary transition-colors"
+              to="/profile"
+              className="text-lg py-2 text-foreground hover:text-primary transition-colors flex items-center gap-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              Account
-            </Link>
-            <Link
-              to="/search"
-              className="text-lg py-2 text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Search
+              <User className="size-5" />
+              <span>會員中心</span>
             </Link>
           </nav>
         </div>
